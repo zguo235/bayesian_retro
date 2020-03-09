@@ -1,7 +1,13 @@
 set -e
-# Next line is an example for loading cuda environment. Comment out next line if cuda is already in your path.
-module load cuda/9.2
-conda create -y -n python36 python=3.6
+
+# Load cuda and conda path.
+# source /etc/profile.d/modules.sh
+# module load cuda/9.2
+# export PATH="$HOME/miniconda3/bin:$PATH"
+# source $HOME/miniconda3/bin/activate
+
+# Create a new conda environment.
+conda create -y -n BayesRetro python=3.6
 source activate python36
 conda install -y rdkit -c rdkit
 conda install -y future tqdm
@@ -13,3 +19,5 @@ pip install .
 conda install -y scipy scikit-learn
 conda install -y matplotlib seaborn
 pip install lightgbm # --install-option=--gpu
+cd ..
+rm -r MolecularTransformer

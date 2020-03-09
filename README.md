@@ -4,8 +4,8 @@ This is the code for the "A Bayesian retrosynthesis algorithm"
 
 ## Requirements
 
-The forward prediction model (fine-tuned Molecular Transformer) and files storing nearest neighbors of each reactant candidate can be found [here](https://figshare.com/projects/bayesian_retro/76935)
-Download these files and put them to appropriate directory.
+The forward prediction model (fine-tuned Molecular Transformer), ranking model (glmnet) and files storing nearest neighbors of each reactant candidate can be found [here](https://figshare.com/projects/bayesian_retro/76935)
+Download these files and put them to appropriate directories.
 ```bash
 
 wget -O nearest_neighbor.zip https://ndownloader.figshare.com/articles/11954913/versions/1
@@ -18,7 +18,7 @@ wget -O utils/glmnet_grouped.RDate https://ndownloader.figshare.com/files/219474
 A new conda environment can be created by python36_environment.sh
 ```bash
 
-./python36_environment.sh
+./BayesRetro_environment.sh
 ```
 
 ## Sequential Monte Carlo algorithm for retrosynthesis
