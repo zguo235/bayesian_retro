@@ -8,7 +8,7 @@ set -e
 
 # Create a new conda environment.
 conda create -y -n BayesRetro python=3.6
-source activate python36
+source activate BayesRetro
 conda install -y rdkit -c rdkit
 conda install -y future tqdm
 conda install -y pytorch=0.4.1 torchvision cudatoolkit=9.0 -c pytorch
@@ -20,4 +20,4 @@ conda install -y scipy scikit-learn
 conda install -y matplotlib seaborn
 pip install lightgbm # --install-option=--gpu
 cd ..
-rm -r MolecularTransformer
+rm -rf MolecularTransformer
