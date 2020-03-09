@@ -2,8 +2,8 @@
 set -e
 trap "echo Error from quick start script" ERR
 
+# Load cuda environment 
 source /etc/profile.d/modules.sh
-# Next line is an example for loading cuda environment. Comment out next line if cuda is already in your path.
 module load cuda/9.2
 export PATH="$HOME/miniconda/bin:$PATH"
 source $HOME/miniconda3/bin/activate
@@ -25,7 +25,7 @@ while [ "$i" -lt 1 ]; do
     start=`date +%s`
     SAVEFILE="reaction${REACTION}_`date +%Y%m%d-%H-%M-%S`_$RANDOM"
     date > log/$SAVEFILE.log
-    python ga_retrosynthesis.py $REACTION $SAVEFILE >> log/$SAVEFILE.log
+    python bayesian_retrosynthesis.py $REACTION $SAVEFILE >> log/$SAVEFILE.log
     exit_code=$?
     date >> log/$SAVEFILE.log
     end=`date +%s`

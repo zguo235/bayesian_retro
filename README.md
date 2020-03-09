@@ -1,8 +1,19 @@
 # Bayesian Retrosynthesis
 
-This is the code for the "Finding diverse routes of organic synthesis using surrogate-accelerated Bayesian retrosynthesis"
+This is the code for the "A Bayesian retrosynthesis algorithm"
 
 ## Requirements
+
+The forward prediction model (fine-tuned Molecular Transformer) and files storing nearest neighbors of each reactant candidate can be found [here](https://figshare.com/projects/bayesian_retro/76935)
+Download these files and put them to appropriate directory.
+```bash
+
+wget -O nearest_neighbor.zip https://ndownloader.figshare.com/articles/11954913/versions/1
+unzip nearest_neighbor.zip -d data/
+rm nearest_neighbor.zip
+wget -O forward_models/fine_tuned_model_on_liu_dataset_0p02.pt https://ndownloader.figshare.com/files/21945630
+wget -O utils/glmnet_grouped.RDate https://ndownloader.figshare.com/files/21947469
+```
 
 A new conda environment can be created by python36_environment.sh
 ```bash

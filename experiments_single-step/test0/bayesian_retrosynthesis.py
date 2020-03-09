@@ -5,7 +5,7 @@ os.environ["MKL_NUM_THREADS"] = "10"
 os.environ["VECLIB_MAXIMUM_THREADS"] = "10"
 os.environ["NUMEXPR_NUM_THREADS"] = "10"
 os.environ["CUDA_DEVICE_ORDER"] = "PCI_BUS_ID"
-# os.environ["CUDA_VISIBLE_DEVICES"] = "0"
+os.environ["CUDA_VISIBLE_DEVICES"] = "0"
 import sys
 from time import time
 import pickle

@@ -1,5 +1,4 @@
 set -e
-echo $PATH
 # Next line is an example for loading cuda environment. Comment out next line if cuda is already in your path.
 module load cuda/9.2
 conda create -y -n python36 python=3.6
