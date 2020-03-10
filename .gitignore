@@ -1,4 +1,11 @@
+__pycache__/
+/single_step/*/figures/
+/single_step/*/log/
+/single_step/*/results/
+nvidia-smi.log
+output_error.log
+top.log
 data/idx_single.npy
 data/prob_single.npy
 forward_models/fine_tuned_model_on_liu_dataset_0p02.pt
-utils/glmnet_grouped.RDate
+utils/glmnet_grouped.RData
