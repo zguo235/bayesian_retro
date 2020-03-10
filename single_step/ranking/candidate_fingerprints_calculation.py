@@ -2,11 +2,14 @@ import os
 import sys
 import pickle
 import numpy as np
+import pandas as pd
 import scipy.sparse as sp
 from utils.fingerprint_utils import SparseFingerprintCsrMatrix
 
 candidates_fps = sp.load_npz('data/candidates_fp_single.npz')
-reaction_num = sys.argv[1]
+reaction_num = int(sys.argv[1])
+test = pd.read_pickle('data/preprocessed_liu_dataset/test_sampled.pickle')
+target_reactant_smi, target_product_smi = test.iloc[reaction_num, [0, 1]]
 
 summary_path = os.path.join('results_summary/', 'reaction{}.pickle'.format(reaction_num))
 with open(summary_path, 'rb') as f:
@@ -19,7 +22,7 @@ for df in summary_df:
         reactant_cand_fps = df['reactants'].apply(lambda x: x.idx2fp(candidates_fps))
         reactant_cand_fps = np.concatenate(reactant_cand_fps.values)
         reactant_cand_fps = sp.csr_matrix(reactant_cand_fps)
-        prod_fps = SparseFingerprintCsrMatrix(smis=df['prod_pred']).tocsr()
+        prod_fps = SparseFingerprintCsrMatrix(smis=[target_product_smi] * len(df)).tocsr()
         cand_fps = sp.hstack([reactant_cand_fps, prod_fps], format='csc')
         cand_fps_all.append(cand_fps)
 

@@ -9,12 +9,10 @@ from utils.draw_utils import draw_mol_smi
 from utils.draw_utils import draw_mols_smi
 
 reaction_num = int(sys.argv[1])
-# # reaction_num = 60
 test = pd.read_pickle('data/preprocessed_liu_dataset/test_sampled.pickle')
 target_reactant_smi, target_product_smi = test.iloc[reaction_num, [0, 1]]
 os.makedirs('results_figs', exist_ok=True)
 
-#----------------------------------------------------------------------------------------------------
 # Draw reactant and product
 target_reactant_svg = draw_mol_smi(target_reactant_smi, legend='reaction{} reactant'.format(reaction_num))
 target_product_svg = draw_mol_smi(target_product_smi, legend='reaction{} product'.format(reaction_num))
@@ -25,14 +23,6 @@ with fig_reactant.open('wt') as f:
     f.write(target_reactant_svg)
 with fig_product.open('wt') as f:
     f.write(target_product_svg)
-# Surrogate model accuracy
-# fig_path = Path('./experiments/test{}/figures'.format(reaction_num // 8))
-# for folder in fig_path.iterdir():
-#     if folder.name.startswith('reaction{}_'.format(reaction_num)):
-#         shutil.copy(str(folder / 'LightGBM_test.png'),
-#                     'results_figs/reaction{}_lgb.png'.format(reaction_num))
-#         break
-#----------------------------------------------------------------------------------------------------
 
 
 def result_analyzer(reaction_num, result, target_reactant_idx, target_product_smi):
@@ -43,10 +33,20 @@ def result_analyzer(reaction_num, result, target_reactant_idx, target_product_sm
     products = np.concatenate(products)
     scores = np.concatenate(scores)
 
-    reactants_df['prod_pred'] = products[:, 0]
-    reactants_df['score'] = scores[:, 0]
-    retro_result = reactants_df[reactants_df['prod_pred'] == target_product_smi]
-    return retro_result
+    identical_m = products == target_product_smi
+    identical_any = np.any(identical_m, axis=1)
+    reactants_found = reactants_df[identical_any]
+    products_found = products[identical_any]
+    scores_found = scores[identical_any]
+    identical_found = identical_m[identical_any]
+
+    reactants_found['identical_prod_id'] = np.nonzero(identical_found)[1]
+    reactants_found['score'] = np.sum(identical_found * scores_found, axis=1)
+
+    products_found = pd.DataFrame(products_found, columns=['prod_pred{}'.format(i) for i in range(5)])
+    scores_found = pd.DataFrame(scores_found, columns=['score{}'.format(i) for i in range(5)])
+    retro_result = pd.concat([reactants_found.reset_index(), products_found, scores_found], axis=1)
+    return retro_result.set_index('index')
 
 
 with open('data/candidates_single.txt') as f:
@@ -54,7 +54,6 @@ with open('data/candidates_single.txt') as f:
 n_candidates = len(candidates_smis)
 candidates_smis = np.array(candidates_smis)
 
-# NOTES: fix this part for multi-step multi-reactant reaction
 target_reactant_smi = target_reactant_smi.split('.')
 
 target_reactant_idx = list()
@@ -63,7 +62,6 @@ for smi_single in target_reactant_smi:
     target_reactant_idx.append(idx_single)
 
 target_reactant_idx = (tuple(sorted(target_reactant_idx)),)
-# target_reactant_idx = ((target_reactant_idx,),)
 
 results_path = Path('results')
 results = list()
@@ -83,17 +81,6 @@ for i, result in enumerate(results):
         result = pickle.load(f)
     df = result_analyzer(reaction_num, result, target_reactant_idx, target_product_smi)
     summary_df.append(df)
-    # Draw candidate reactant pairs
-    # if len(df) > 0:
-    #     df = df.sort_values(by='distance_true', axis=0, ascending=True).reset_index(drop=True)
-    #     reactants_cand_fig = Path('results_figs') / 'reaction{}_cand'.format(reaction_num)
-    #     os.makedirs(str(reactants_cand_fig), exist_ok=True)
-    #     # FIXME: Only for single step
-    #     reactants_cand = df['reactants'].apply(lambda x: x.idx2smi(candidates_smis)[0])
-    #     reactants_cand_svg = draw_mols_smi(reactants_cand,
-    #                                        legends=list(df['distance_true'].astype('str')))
-    #     with open(str(reactants_cand_fig / 'experiments{}.svg'.format(i)), 'wt') as f:
-    #         f.write(reactants_cand_svg)
 
 os.makedirs('results_summary', exist_ok=True)
 summary_path = Path('results_summary') / 'reaction{}.pickle'.format(reaction_num)
