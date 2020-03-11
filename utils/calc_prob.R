@@ -1,9 +1,11 @@
+# install.packages("glmnet")
+# install.packages("reticulate")
 rm(list=ls())
 suppressMessages(library(glmnet))
 suppressMessages(library(reticulate))
 load('glmnet_grouped.RData')
 
-use_condaenv('python36')
+use_condaenv('BayesRetro')
 # py_config()
 np <- import('numpy', convert=T)
 sp <- import('scipy.sparse', convert=T)
