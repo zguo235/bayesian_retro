@@ -104,10 +104,6 @@ lgb_params = {
 }
 regr = lgb.train(lgb_params, lgb_train, num_boost_round=500, valid_sets=lgb_eval,
                  early_stopping_rounds=5, verbose_eval=10)
-# regr = lgb.LGBMRegressor(n_estimators=500, num_leaves=63, learning_rate=0.1, min_child_samples=10,
-#                          subsample=1, colsample_bytree=0.8) #, n_jobs=6)
-# regr.fit(train_X, train_y, eval_set=[(valid_X, valid_y)], eval_metric=['l1', 'l2'],
-#          early_stopping_rounds=5, verbose=20)
 
 test_X = scipy.sparse.load_npz('data/preprocessed_liu_dataset/test_X.npz')
 test_y_smi = list()
