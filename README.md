@@ -34,7 +34,7 @@ Each step of SMC takes about 30 sec. Step number is set to 600. The total search
 
 The ranking model is in single-step/ranking directory.
 Install R packages **glmnet** and **reticulate** from CRAN to use this model.
-```r
+```{r}
 
 install.packages("glmnet")
 install.packages("reticulate")
