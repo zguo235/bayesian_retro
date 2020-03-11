@@ -40,9 +40,10 @@ try:
     else:
         print("Length of candidate class prediction differs from total summary_df length.",
               file=sys.stderr, flush=True)
-        continue
+        sys.exit(1)
 except FileNotFoundError:
     print('cand_prob_rxn{}.csv'.format(reaction_num), "doesn't exist")
+    sys.exit(0)
 
 results_summary = list()
 for i, df in enumerate(summary_df):
