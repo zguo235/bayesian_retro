@@ -33,6 +33,14 @@ Each step of SMC takes about 30 sec. Step number is set to 600. The total search
 ## Ranking candidate synthetic routes
 
 The ranking model is in single-step/ranking directory.
+Install R packages **glmnet** and **reticulate** from CRAN to use this model.
+```r
+
+install.packages("glmnet")
+install.packages("reticulate")
+```
+
+Rank the detected synthetic routes
 ```bash
 
 ./ranking.sh
