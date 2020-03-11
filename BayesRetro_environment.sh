@@ -1,10 +1,10 @@
 set -e
 
 # Load cuda and conda path.
-source /etc/profile.d/modules.sh
-module load cuda/9.2
-export PATH="$HOME/miniconda3/bin:$PATH"
-source $HOME/miniconda3/bin/activate
+# source /etc/profile.d/modules.sh
+# module load cuda/9.2
+# export PATH="$HOME/miniconda3/bin:$PATH"
+# source $HOME/miniconda3/bin/activate
 
 # Create a new conda environment.
 conda create -y -n BayesRetro python=3.6

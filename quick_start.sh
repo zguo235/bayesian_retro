@@ -3,11 +3,11 @@ set -e
 trap "echo Error from quick start script" ERR
 
 # Load cuda environment
-source /etc/profile.d/modules.sh
-module load cuda/9.2
-export PATH="$HOME/miniconda3/bin:$PATH"
-source $HOME/miniconda3/bin/activate
-conda activate BayesRetro
+# source /etc/profile.d/modules.sh
+# module load cuda/9.2
+# export PATH="$HOME/miniconda3/bin:$PATH"
+# source $HOME/miniconda3/bin/activate
+# source activate BayesRetro
 
 cd ./single_step/smc
 mkdir -p log
