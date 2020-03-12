@@ -114,6 +114,7 @@ class ParticalsTargetDistanceCalculator(object):
     def prediction_smi(self, smis_list, **kwargs):
         smis_list_zipped = zip(*smis_list)
         product_previous_step = [""] * len(smis_list)
+        top_score = np.zeros((len(smis_list), 1))
         for smi_list_step in smis_list_zipped:
             smi_list_step = zip(product_previous_step, smi_list_step)
             smi_list_step = [".".join(filter(None, smi)) for smi in smi_list_step]
@@ -123,23 +124,14 @@ class ParticalsTargetDistanceCalculator(object):
                 assert s == ''.join(s)
                 processed_smi.append(' '.join(token))
             step_score, step_product = self.predictor.translate(src_data_iter=processed_smi, **kwargs)
+            total_score = np.array(step_score) + top_score
+            top_score = total_score[:, 0].reshape(len(total_score), 1)
             product_previous_step = [step_product[i][0] for i in range(len(smis_list))]
-        return step_product, step_score
-
-    # def prediction_index(self, reactants_index, **kwargs):
-    #     reactants_smi = list()
-    #     for index in reactants_index:
-    #         reactant_smi = ''
-    #         for i in index:
-    #             reactant_smi += self.candidates_smis[i] + '.'
-    #         reactants_smi.append(reactant_smi[:-1])
-    #     scores, products = self.prediction_smi(reactants_smi, **kwargs)
-    #     return products, scores
+        return step_product, total_score
 
     def distance_index(self, reactants_list, **kwargs):
         smis_list = [r.idx2smi(self.candidates_smis) for r in reactants_list]
         products, scores = self.prediction_smi(smis_list, **kwargs)
-        # products, scores = self.prediction_index(reactants_list, **kwargs)
         distances = self.target.distance(products)
         print(distances.mask(distances == 9999).describe())
         distances = distances.values
@@ -164,7 +156,6 @@ def cal_random_weights(idx, method=None):
         idx_sparse = csr_matrix((data, indices, indptr), shape=(len(idx), len(idx)), dtype=np.int8)
         transition_prob = idx_sparse.sum(axis=0)
         transition_prob = np.array(transition_prob)[0]
-        # low_prob = transition_prob.argsort()
         if method == 'calib1':
             random_sampling_weights = 1 / transition_prob
             return random_sampling_weights
@@ -258,9 +249,6 @@ class ReactantList(object):
         reactant_gibbs = self.reactant_list[self.gibbs_index[0]][self.gibbs_index[1]]
         reactant_next = idx[reactant_gibbs]
         reactant_next = set(reactant_next).difference(set(exclude))
-        # if exclude in reactant_next:
-        #     reactant_next = list(reactant_next)
-        #     reactant_next.remove(exclude)
         gibbs_index1 = (self.gibbs_index[1] + 1) % len(self.reactant_list[self.gibbs_index[0]])
         if (self.gibbs_index[1] + 1) // len(self.reactant_list[self.gibbs_index[0]]):
             gibbs_index0 = (self.gibbs_index[0] + 1) % len(self.reactant_list)
@@ -305,7 +293,6 @@ class ReactantList(object):
         else:
             new_reactant = np.random.choice(n_candidates, size=int(sum(new_list)-sum(old_list)),
                                             replace=False, p=weights)
-        # import pdb; pdb.set_trace()
         for i in range(len(new_list)):
             try:
                 if new_list[i] > old_list[i]:

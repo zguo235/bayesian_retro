@@ -15,7 +15,8 @@ candidates_smis = np.array(candidates_smis)
 candidates_fps = sp.load_npz('data/candidates_fp_single.npz')
 test = pd.read_pickle('data/preprocessed_liu_dataset/test_sampled.pickle')
 test = test.reset_index(drop=True)
-os.makedirs('ranking_summary', exist_ok=True)
+summary_dir = Path('ranking_summary')
+summary_dir.mkdir(exist_ok=True)
 
 target_reactant_smi, target_product_smi = test.iloc[reaction_num, [0, 1]]
 target_reactant_smi = target_reactant_smi.split('.')
@@ -30,7 +31,7 @@ with open(summary_path, 'rb') as f:
     summary_df = pickle.load(f)
 
 try:
-    cand_prob_path = os.path.join('results_summary', 'cand_fps', 'cand_prob_rxn{}.csv'.format(reaction_num))
+    cand_prob_path = os.path.join('results_summary', 'candidate_reactions_fps', 'reaction{}_prob.csv'.format(reaction_num))
     cand_prob = pd.read_csv(cand_prob_path, dtype=float)
     cand_prob = cand_prob.max(axis=1)
     summary_df_len = list(map(len, summary_df))
@@ -42,7 +43,7 @@ try:
               file=sys.stderr, flush=True)
         sys.exit(1)
 except FileNotFoundError:
-    print('cand_prob_rxn{}.csv'.format(reaction_num), "doesn't exist")
+    print('reaction{}_prob.csv'.format(reaction_num), "doesn't exist")
     sys.exit(0)
 
 results_summary = list()
@@ -67,4 +68,4 @@ for i, df in enumerate(summary_df):
 summary = pd.DataFrame(results_summary, columns=['reaction_num', 'product_found', 'n_candidates', 'reactant_found',
                                                  'true_reactant_order', 'step_num', 'identical_prod_id', 'score',
                                                  'distance_pred', 'distance_true', 'prob_max', 'prob_multi'])
-summary.to_csv(str(Path('ranking_summary') / 'reaction{}.csv'.format(reaction_num)), index=False)
+summary.to_csv(str(summary_dir / 'reaction{}.csv'.format(reaction_num)), index=False)

@@ -83,7 +83,7 @@ def prediction(reactant_smis, predictor=build_translator(), batch_size=100, attn
     processed_smis = list()
     for s in reactant_smis:
         token = regex.findall(s)
-        assert s == ''.join(s)
+        assert s == ''.join(token)
         processed_smis.append(' '.join(token))
 
     return predictor.translate(src_data_iter=processed_smis,

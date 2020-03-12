@@ -11,8 +11,8 @@ python candidates_extracting.py $reaction_num
 
 cd results_summary/candidate_reactions_fps
 ln -s ../../utils/glmnet_grouped.RData
-ln -s ../../utils/calc_prob_single.R calc_prob.R
-if [ -f reaction${reaction_num}.npz ]
+ln -s ../../utils/calc_prob_multi.R calc_prob.R
+if [ -f reaction${reaction_num}_step1.npz -a -f reaction${reaction_num}_step2.npz ]
 then
     Rscript calc_prob.R $reaction_num
     echo "Reaction$reaction_num done"
