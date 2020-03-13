@@ -43,3 +43,5 @@ Rank the detected synthetic routes
 
 ./ranking.sh
 ```
+
+## t-SNE embedding
