@@ -3,10 +3,6 @@ set -e
 source activate BayesRetro
 
 reaction_num=0
-mkdir -p results
-cd results
-find ../../smc/results -maxdepth 1 -name "reaction${reaction_num}_*.pickle" -exec ln -s {} \;
-cd ..
 python candidates_extracting.py $reaction_num
 
 cd results_summary/candidate_reactions_fps

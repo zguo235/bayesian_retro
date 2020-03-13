@@ -12,6 +12,8 @@ from utils.draw_utils import draw_mols_smi
 
 candidates_fps = sp.load_npz('data/candidates_fp_single.npz')
 reaction_num = int(sys.argv[1])
+current_file_path = Path(__file__)
+results_path = current_file_path.absolute().parents[1] / 'smc' / 'results'
 test = pd.read_pickle('data/preprocessed_liu_dataset/test_sampled.pickle')
 target_reactant_smi, target_product_smi = test.iloc[reaction_num, [0, 1]]
 os.makedirs('results_figs', exist_ok=True)
@@ -66,7 +68,6 @@ for smi_single in target_reactant_smi:
 
 target_reactant_idx = (tuple(sorted(target_reactant_idx)),)
 
-results_path = Path('results')
 results = list()
 for r in results_path.iterdir():
     if r.stem.startswith('reaction{}_'.format(reaction_num)) and r.suffix == '.pickle':

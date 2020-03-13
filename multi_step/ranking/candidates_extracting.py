@@ -24,14 +24,17 @@ import re
 pattern = "(\[[^\]]+]|Br?|Cl?|N|O|S|P|F|I|b|c|n|o|s|p|\(|\)|\.|=|#|-|\+|\\\\|\/|:|~|@|\?|>|\*|\$|\%[0-9]{2}|[0-9])"
 regex = re.compile(pattern)
 # Import candidate reactant SMILES and fingerprints
-# import scipy
 with open('data/candidates_single.txt') as f:
     candidates_smis = [s.strip() for s in f.readlines()]
 n_candidates = len(candidates_smis)
 candidates_smis = np.array(candidates_smis)
 candidates_fps = sp.load_npz('data/candidates_fp_single.npz')
+
 reactant_num_list = [2, 1]
 reaction_num = int(sys.argv[1])
+current_file_path = Path(__file__)
+results_path = current_file_path.absolute().parents[1] / 'smc' / 'results'
+
 test_2steps = pd.read_pickle('data/preprocessed_liu_dataset/test_2steps.pickle')
 target_reaction = test_2steps.iloc[reaction_num, :]
 reactant_smi_list = list()
@@ -81,7 +84,6 @@ def result_analyzer(result, target_product_smi):
     return retro_result
 
 
-results_path = Path('results')
 results = list()
 for r in results_path.iterdir():
     if r.stem.startswith('reaction{}_'.format(reaction_num)) and r.suffix == '.pickle':

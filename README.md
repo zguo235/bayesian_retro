@@ -27,7 +27,9 @@ quick_start.sh is an example to try the SMC algorithm for retrosynthesis.
 Each step of SMC takes about 30 sec. Step number is set to 600. The total search will take 6 h .
 ```bash
 
-./quick_start.sh
+cd ./single_step/smc
+mkdir -p log
+python bayesian_retrosynthesis.py 0 reaction0 >> log/reaction0.log
 ```
 ## Ranking candidate synthetic routes
 
@@ -43,5 +45,3 @@ Rank the detected synthetic routes
 
 ./ranking.sh
 ```
-
-## t-SNE embedding
