@@ -11,7 +11,6 @@ Download these files and put them to appropriate directories.
 wget -O nearest_neighbor.zip https://ndownloader.figshare.com/articles/11954913/versions/1
 unzip nearest_neighbor.zip -d data/
 rm nearest_neighbor.zip
-mkdir -p forward_models
 wget -O forward_models/fine_tuned_model_on_liu_dataset_0p02.pt https://ndownloader.figshare.com/files/21945630
 wget -O utils/glmnet_grouped.RData https://ndownloader.figshare.com/files/21947469
 ```
