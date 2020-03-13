@@ -89,8 +89,7 @@ for i, result in enumerate(results):
         candidate_reactants_fps = np.concatenate(candidate_reactants_fps.values)
         candidate_reactants_fps = sp.csr_matrix(candidate_reactants_fps)
         product_fps = SparseFingerprintCsrMatrix(smis=[target_product_smi] * len(df)).tocsr()
-        candidate_reactions_fps = sp.hstack([candidate_reactants_fps, product_fps], format='csc')
-        candidate_reactions_fps.append(candidate_reactions_fps)
+        candidate_reactions_fps.append(sp.hstack([candidate_reactants_fps, product_fps], format='csc'))
     candidate_reactions.append(df)
 
 summary_dir = Path('results_summary')

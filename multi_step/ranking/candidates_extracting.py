@@ -138,11 +138,11 @@ summary_dir.mkdir(exist_ok=True)
 summary_fps_dir = summary_dir / 'candidate_reactions_fps'
 summary_fps_dir.mkdir(exist_ok=True)
 summary_path = summary_dir / 'reaction{}.pickle'.format(reaction_num)
-with summary_path.open('wb') as f:
-    pickle.dump((candidate_reactions, candidate_reactions_len), f, fix_imports=False)
 if len(candidate_reactions) > 0:
     candidate_reactions = pd.concat(candidate_reactions, axis=0, ignore_index=True)
     candidate_reactions_step1_fps = sp.vstack(candidate_reactions_step1_fps, 'csc')
     sp.save_npz(os.path.join('results_summary', 'candidate_reactions_fps', 'reaction{}_step1'.format(reaction_num)), candidate_reactions_step1_fps)
     candidate_reactions_step2_fps = sp.vstack(candidate_reactions_step2_fps, 'csc')
     sp.save_npz(os.path.join('results_summary', 'candidate_reactions_fps', 'reaction{}_step2'.format(reaction_num)), candidate_reactions_step2_fps)
+with summary_path.open('wb') as f:
+    pickle.dump((candidate_reactions, candidate_reactions_len), f, fix_imports=False)

@@ -1,6 +1,6 @@
 #!/bin/bash
-set -e
-source activate BayesRetro
+# set -e
+# source activate BayesRetro
 
 reaction_num=0
 python candidates_extracting.py $reaction_num

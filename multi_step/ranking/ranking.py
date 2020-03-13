@@ -5,7 +5,6 @@ import numpy as np
 import pandas as pd
 import scipy.sparse as sp
 from pathlib import Path
-from lvdmaaten import bhtsne
 from utils.draw_utils import draw_mols_smi
 from utils.ga_utils import csc_drop_zerocols
 # import shutil
@@ -20,8 +19,7 @@ candidates_fps = sp.load_npz('data/candidates_fp_single.npz')
 reactant_num_list = [2, 1]
 test_2steps = pd.read_pickle('data/preprocessed_liu_dataset/test_2steps.pickle')
 
-# reaction_num = 0
-total_num = int(sys.argv[1])
+reaction_num = int(sys.argv[1])
 summary_dir = Path('ranking_summary')
 summary_dir.mkdir(exist_ok=True)
 candidates_sorted_dir = summary_dir / 'candidates_sorted'
@@ -78,18 +76,12 @@ else:
     summary_fps = summary_df['reactants'].apply(lambda x: x.idx2fp(candidates_fps))
     summary_fps = sp.csc_matrix(np.concatenate(summary_fps.values, axis=0))
     summary_fps_dropped = csc_drop_zerocols(summary_fps)
-    summary_fps_tsne = np.asarray(summary_fps_dropped.todense(), dtype=float)
-    fps_tsne = bhtsne.run_bh_tsne(summary_fps_tsne, perplexity=50, theta=0.5,
-                                  initial_dims=summary_fps_dropped.shape[1],
-                                  use_pca=True, verbose=1, max_iter=1000)
-    summary_df['tsne_x'] = fps_tsne[:, 0]
-    summary_df['tsne_y'] = fps_tsne[:, 1]
 
     df_sorted = summary_df.sort_values(by='prob_multi', axis=0, ascending=False).reset_index(drop=True)
     df_pickle = df_sorted[['reactants_idx', 'reactant_smi_step1', 'product_smi_step1',
                         'reactant_smi_step2', 'product_smi_step2', 'distance_pred',
                         'distance_true', 'score', 'prob_step1', 'prob_step2',
-                        'prob_multi', 'tsne_x', 'tsne_y']]
+                        'prob_multi']]
     df_pickle.to_pickle(str(candidates_sorted_dir / 'reaction{}.pickle'.format(reaction_num)))
 
     df_step1_smis = df_pickle['reactant_smi_step1'].str.split('.', expand=True)
@@ -119,5 +111,4 @@ else:
 summary = pd.DataFrame([summary], columns=['reaction_num', 'product_found', 'n_candidates', 'reactant_found',
                                                  'true_reactant_order',  'prob_multi'])
 summary = summary.set_index('reaction_num')
-summary = target_reaction.join(summary)
 summary.to_csv(str(summary_dir / 'reaction{}.csv'.format(reaction_num)), index=False)
