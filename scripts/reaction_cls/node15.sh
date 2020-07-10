@@ -1,6 +1,6 @@
 #!/bin/bash
 set -e
-node=1
+node=15
 trap "echo Error from node$node" ERR
 
 source /etc/profile.d/modules.sh
@@ -9,7 +9,7 @@ export PATH="$HOME/miniconda/bin:$PATH"
 source $HOME/miniconda/bin/activate
 conda activate python36
 
-cd /groups1/gcc50461/single1000/single_step/test$node
+cd /groups1/gcc50461/reaction_cls/single_step/test$node
 mkdir -p log
 
 set +e
@@ -25,7 +25,8 @@ esac
 OFFSET=$1
 
 i=0
-while [ "$i" -lt 9 ]; do
+error_count=0
+while [ "$i" -lt 5 ]; do
     REACTION=`expr $OFFSET + $i`
     start=`date +%s`
     SAVEFILE="reaction${REACTION}_`date +%Y%m%d-%H-%M-%S`_$RANDOM"
@@ -38,22 +39,28 @@ while [ "$i" -lt 9 ]; do
     if [ $exit_code -eq 0 ]; then
         echo "Experiment of reaction$REACTION on cuda$cuda finished at `date`. Elapsed time: $runtime minutes." >> output_error.log
         i=`expr "$i" + 1`
-    else
+        error_count=0
+    elif [ $exit_code -ne 0 -a $error_count -lt 10 ]; then
         echo "Error: Experiment of reaction$REACTION on cuda$cuda failed at `date`. Elapsed time: $runtime minutes. Restart this experiment." >> output_error.log
+        error_count=`expr "$error_count" + 1`
+    else
+        echo "Error: Experiment of reaction$REACTION on cuda$cuda failed at `date`. Elapsed time: $runtime minutes. Jump to next reaction since 10 trials has done" >> output_error.log
+        i=`expr "$i" + 1`
+        error_count=0
     fi
 done
 )
 
-ga_gpu -cuda0 136 &
+ga_gpu -cuda0 300 &
 pid[1]=$!
 
-ga_gpu -cuda1 145 &
+ga_gpu -cuda1 305 &
 pid[2]=$!
 
-ga_gpu -cuda2 154 &
+ga_gpu -cuda2 310 &
 pid[3]=$!
 
-ga_gpu -cuda3 163 &
+ga_gpu -cuda3 315 &
 pid[4]=$!
 
 top -bci -d 10 -w 180 -u acb11109zq >> top.log &

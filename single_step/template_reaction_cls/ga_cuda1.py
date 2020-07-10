@@ -5,7 +5,7 @@ os.environ["MKL_NUM_THREADS"] = "10"
 os.environ["VECLIB_MAXIMUM_THREADS"] = "10"
 os.environ["NUMEXPR_NUM_THREADS"] = "10"
 os.environ["CUDA_DEVICE_ORDER"] = "PCI_BUS_ID"
-os.environ["CUDA_VISIBLE_DEVICES"] = "3"
+os.environ["CUDA_VISIBLE_DEVICES"] = "1"
 import sys
 from time import time
 import pickle
@@ -44,7 +44,7 @@ except IndexError:
     savedir = "time_test"
 online = 'off'
 # Target reaction
-with open('data/preprocessed_liu_dataset/test_sampled.pickle', 'rb') as f:
+with open('data/preprocessed_liu_dataset/test_cls.pickle', 'rb') as f:
     test_reaction = pickle.load(f)
 reaction_num = int(sys.argv[1])
 # reaction_num = 0

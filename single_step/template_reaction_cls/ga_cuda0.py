@@ -44,7 +44,7 @@ except IndexError:
     savedir = "time_test"
 online = 'off'
 # Target reaction
-with open('data/preprocessed_liu_dataset/test_sampled.pickle', 'rb') as f:
+with open('data/preprocessed_liu_dataset/test_cls.pickle', 'rb') as f:
     test_reaction = pickle.load(f)
 reaction_num = int(sys.argv[1])
 # reaction_num = 0

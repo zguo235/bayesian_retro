@@ -2,7 +2,7 @@
 
 set -e
 
-for j in `seq 1 5`; do
+for j in `seq 1 23`; do
     rxna=$(($j * 20))
     rxnb=`expr "$rxna" + 5`
     rxnc=`expr "$rxnb" + 5`

@@ -1,6 +1,6 @@
 #!/bin/bash
 set -e
-node=0
+node=23
 trap "echo Error from node$node" ERR
 
 source /etc/profile.d/modules.sh
@@ -9,7 +9,7 @@ export PATH="$HOME/miniconda/bin:$PATH"
 source $HOME/miniconda/bin/activate
 conda activate python36
 
-cd /groups1/gcc50461/single1000/single_step/test$node
+cd /groups1/gcc50461/reaction_cls/single_step/test$node
 mkdir -p log
 
 set +e
@@ -51,17 +51,14 @@ while [ "$i" -lt 5 ]; do
 done
 )
 
-ga_gpu -cuda0 0 &
+ga_gpu -cuda0 460 &
 pid[1]=$!
 
-ga_gpu -cuda1 5 &
+ga_gpu -cuda1 465 &
 pid[2]=$!
 
-ga_gpu -cuda2 10 &
+ga_gpu -cuda2 470 &
 pid[3]=$!
-
-ga_gpu -cuda3 15 &
-pid[4]=$!
 
 top -bci -d 10 -w 180 -u acb11109zq >> top.log &
 pid_top=$!
