@@ -1,8 +1,17 @@
 #!/bin/bash
 set -e
-source activate BayesRetro
+# source activate BayesRetro
+export PATH="$HOME/miniconda/bin:$PATH"
+source $HOME/miniconda/bin/activate
+conda activate python36
 
-reaction_num=0
+# Run one time for the first reaction
+# mkdir -p results
+# cd results
+# find ../../test* -name 'reaction*.pickle' -exec ln -s {} . \;
+# cd ..
+
+reaction_num=$0
 python candidates_extracting.py $reaction_num
 
 cd results_summary/candidate_reactions_fps

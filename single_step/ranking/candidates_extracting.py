@@ -13,7 +13,7 @@ from utils.draw_utils import draw_mols_smi
 candidates_fps = sp.load_npz('data/candidates_fp_single.npz')
 reaction_num = int(sys.argv[1])
 current_file_path = Path(__file__)
-results_path = current_file_path.absolute().parents[1] / 'smc' / 'results'
+results_path = current_file_path.absolute().parents[0] / 'results'
 test = pd.read_pickle('data/preprocessed_liu_dataset/test_sampled.pickle')
 target_reactant_smi, target_product_smi = test.iloc[reaction_num, [0, 1]]
 os.makedirs('results_figs', exist_ok=True)
@@ -75,6 +75,9 @@ for r in results_path.iterdir():
 if len(results) < 10:
     print('Experiments of reaction{} less than 10'.format(reaction_num),
           file=sys.stderr, flush=True)
+elif len(results) == 0:
+    print('No result for reaction{}!'.format(reaction_num))
+    sys.exit(0)
 else:
     results = results[:10]
 
