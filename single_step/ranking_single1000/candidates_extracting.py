@@ -14,7 +14,7 @@ candidates_fps = sp.load_npz('data/candidates_fp_single.npz')
 reaction_num = int(sys.argv[1])
 current_file_path = Path(__file__)
 results_path = current_file_path.absolute().parents[0] / 'results'
-test = pd.read_pickle('data/preprocessed_liu_dataset/test_cls.pickle')
+test = pd.read_pickle('data/preprocessed_liu_dataset/test_sampled.pickle')
 target_reactant_smi, target_product_smi = test.iloc[reaction_num, [0, 1]]
 os.makedirs('results_figs', exist_ok=True)
 
