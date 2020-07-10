@@ -1,6 +1,7 @@
 __pycache__/
 .backup/
 /single_step/test*/
+/multi_step/test*/
 /*/smc/figures/
 /*/smc/log/
 /*/smc/results/
