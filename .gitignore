@@ -1,12 +1,13 @@
 __pycache__/
 .backup/
+/single_step/test*/
 /*/smc/figures/
 /*/smc/log/
 /*/smc/results/
-/*/ranking/ranking_summary/
-/*/ranking/results_figs/
-/*/ranking/results_summary/
-/*/ranking/results/
+/*/ranking*/ranking_summary/
+/*/ranking*/results_figs/
+/*/ranking*/results_summary/
+/*/ranking*/results/
 nvidia-smi.log
 output_error.log
 top.log
