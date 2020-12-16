@@ -1,6 +1,7 @@
 # Bayesian Retrosynthesis
 
-This is the code for the "A Bayesian retrosynthesis algorithm"
+This is the implementation of the "Bayesian Algorithm for Retrosynthesis"
+https://pubs.acs.org/doi/10.1021/acs.jcim.0c00320
 
 ## Requirements
 
@@ -45,3 +46,8 @@ Rank the detected synthetic routes
 
 ./ranking.sh
 ```
+
+# References
+
+If you find this paper/code is useful for you research, please consider citing the paper:
+https://pubs.acs.org/doi/10.1021/acs.jcim.0c00320
