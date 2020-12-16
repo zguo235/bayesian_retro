@@ -49,5 +49,5 @@ Rank the detected synthetic routes
 
 # References
 
-If you find this paper/code is useful for you research, please consider citing the paper:
+If you find this paper/code is useful for your research, please consider citing the paper:
 https://pubs.acs.org/doi/10.1021/acs.jcim.0c00320
